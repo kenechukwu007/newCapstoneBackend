@@ -57,7 +57,7 @@ public class ShoppingCartService {
     public void deleteItem(Integer itemId, Appuser appuser) {
         // implement delete logic by retreiving from user
         Optional<ShoppingCart> optionalShoppingCart = shoppingCartRepo.findById(itemId);
-        if(optionalShoppingCart.isEmpty()){ // check if cart is empty or not
+        if(optionalShoppingCart.isPresent()){ // check if cart is empty or not
             throw new CustomizedException("this item id doesn't exist" + itemId);
         }
 

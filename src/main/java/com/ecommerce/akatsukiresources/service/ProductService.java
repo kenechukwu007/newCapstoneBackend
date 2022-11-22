@@ -69,7 +69,7 @@ public class ProductService {
 
     public Product findById(Integer productid) {
        Optional<Product> product =  productRepo.findById(productid);
-        if(product.isEmpty()){
+        if(product.isPresent()){
             throw new InvalidProductException("This doesn't exist => " + productid);
         }
         return product.get();
