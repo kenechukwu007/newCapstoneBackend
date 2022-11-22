@@ -16,7 +16,7 @@ public class Product {
     private @NotNull double price;
     private @NotNull String description;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "category_id")
     Category category;
 

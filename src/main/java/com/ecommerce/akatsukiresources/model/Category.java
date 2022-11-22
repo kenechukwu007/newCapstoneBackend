@@ -2,6 +2,7 @@ package com.ecommerce.akatsukiresources.model;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import java.util.Set;
 
 @Entity
 @Table(name = "category")
@@ -18,6 +19,10 @@ public class Category {
 
 
     private @NotBlank String imageUrl;
+
+    @OneToMany(mappedBy = "category", fetch = FetchType.LAZY,
+            cascade = CascadeType.ALL)
+    Set<Product> products;
 
     public Integer getId() {
         return id;
@@ -39,6 +44,14 @@ public class Category {
         return description;
     }
 
+    public Set<Product> getProducts() {
+        return products;
+    }
+
+    public void setProducts(Set<Product> products) {
+        this.products = products;
+    }
+
     public void setDescription(String description) {
         this.description = description;
     }
@@ -49,5 +62,20 @@ public class Category {
 
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
+    }
+
+    public Category(@NotBlank String categoryName, @NotBlank String description) {
+        this.categoryName = categoryName;
+        this.description = description;
+    }
+
+    public Category(@NotBlank String categoryName, @NotBlank String description, @NotBlank String imageUrl) {
+        this.categoryName = categoryName;
+        this.description = description;
+        this.imageUrl = imageUrl;
+    }
+
+    public Category(){
+
     }
 }
