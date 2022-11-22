@@ -58,20 +58,20 @@ public class ProductService {
        if(!product.isPresent()){
            throw new Exception("This product doesn't exist");
        }
-       Product product1 = product.get();
-       product1.setDescription(productDto.getDescription());
-       product1.setImageURL(productDto.getImageURL());
-       product1.setName(productDto.getName());
-       product1.setPrice(productDto.getPrice());
-       productRepo.save(product1);
+       Product existingProduct = product.get();
+       existingProduct.setDescription(productDto.getDescription());
+       existingProduct.setImageURL(productDto.getImageURL());
+       existingProduct.setName(productDto.getName());
+       existingProduct.setPrice(productDto.getPrice());
+       productRepo.save(existingProduct);
 
     }
 
     public Product findById(Integer productid) {
-       Optional<Product> product1 =  productRepo.findById(productid);
-        if(product1.isEmpty()){
+       Optional<Product> product =  productRepo.findById(productid);
+        if(product.isEmpty()){
             throw new InvalidProductException("This doesn't exist => " + productid);
         }
-        return product1.get();
+        return product.get();
     }
 }
