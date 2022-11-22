@@ -10,6 +10,7 @@ import com.ecommerce.akatsukiresources.model.VerificationToken;
 import com.ecommerce.akatsukiresources.repository.AppUserRepo;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -22,7 +23,6 @@ import java.security.NoSuchAlgorithmException;
 import java.util.Objects;
 
 @Service
-@AllArgsConstructor
 public class AppUserService  {
 
     @Autowired
@@ -30,6 +30,7 @@ public class AppUserService  {
 
     @Autowired
      VerificationService verificationService;
+
 
     public ResponseDto register(AppUserDto appUserDto){
         // verify if user exist
