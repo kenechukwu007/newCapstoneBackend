@@ -1,6 +1,7 @@
 package com.ecommerce.akatsukiresources.service;
 
 import com.ecommerce.akatsukiresources.dto.ProductDto;
+import com.ecommerce.akatsukiresources.handler.InvalidProductException;
 import com.ecommerce.akatsukiresources.model.Category;
 import com.ecommerce.akatsukiresources.model.Product;
 import com.ecommerce.akatsukiresources.repository.ProductRepo;
@@ -55,7 +56,7 @@ public class ProductService {
        Optional<Product> product = productRepo.findById(productId);
        // throw an exception if not existing
        if(!product.isPresent()){
-           throw new Exception("product not present");
+           throw new Exception("This product doesn't exist");
        }
        Product product1 = product.get();
        product1.setDescription(productDto.getDescription());
@@ -64,5 +65,13 @@ public class ProductService {
        product1.setPrice(productDto.getPrice());
        productRepo.save(product1);
 
+    }
+
+    public Product findById(Integer productid) {
+       Optional<Product> product1 =  productRepo.findById(productid);
+        if(product1.isEmpty()){
+            throw new InvalidProductException("This doesn't exist => " + productid);
+        }
+        return product1.get();
     }
 }

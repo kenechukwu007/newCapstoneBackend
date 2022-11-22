@@ -2,10 +2,11 @@ package com.ecommerce.akatsukiresources.model;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.UUID;
 
 @Entity
 @Table(name = "tokens")
-public class AuthenticationToken {
+public class VerificationToken {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,9 +18,18 @@ public class AuthenticationToken {
     @Column(name = "created_date")
     private Date createdDate;
 
-    @OneToOne(targetEntity = user.class, fetch = FetchType.EAGER)
-    @JoinColumn(nullable = false, name = "user_id")
-    private user user1;
+    @OneToOne(targetEntity = Appuser.class, fetch = FetchType.EAGER)
+    @JoinColumn(nullable = false, name = "userid")
+    private Appuser appuser;
+
+    public VerificationToken() {
+    }
+
+    public VerificationToken(Appuser appuser){
+        this.appuser = appuser;
+        this.createdDate = new Date();
+        this.token = UUID.randomUUID().toString();
+    }
 
     public Integer getId() {
         return id;
@@ -45,11 +55,13 @@ public class AuthenticationToken {
         this.createdDate = createdDate;
     }
 
-    public user getUser1() {
-        return user1;
+    public Appuser getUser1() {
+        return appuser;
     }
 
-    public void setUser1(user user1) {
-        this.user1 = user1;
+    public void setUser1(Appuser user1) {
+        this.appuser = user1;
     }
+
+
 }
