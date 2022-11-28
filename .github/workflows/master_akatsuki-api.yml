@@ -23,6 +23,9 @@ jobs:
 
       - name: Set up MySQL
         uses: mirromutth/mysql-action@v1.1
+        with:
+          mysql root password: William1
+          mysql user: root
 
       - name: Build with Maven
         run: mvn clean install
