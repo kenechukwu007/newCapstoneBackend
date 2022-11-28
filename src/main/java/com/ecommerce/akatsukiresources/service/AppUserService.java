@@ -3,16 +3,12 @@ package com.ecommerce.akatsukiresources.service;
 import com.ecommerce.akatsukiresources.dto.AppDto.AppUserDto;
 import com.ecommerce.akatsukiresources.dto.AuthResponseDto;
 import com.ecommerce.akatsukiresources.dto.LoginDto;
-import com.ecommerce.akatsukiresources.dto.LoginDtoReceipt;
-import com.ecommerce.akatsukiresources.dto.ResponseDto;
 import com.ecommerce.akatsukiresources.handler.CustomizedException;
 import com.ecommerce.akatsukiresources.model.Appuser;
 import com.ecommerce.akatsukiresources.model.VerificationToken;
 import com.ecommerce.akatsukiresources.repository.AppUserRepo;
-import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.xml.bind.DatatypeConverter;
