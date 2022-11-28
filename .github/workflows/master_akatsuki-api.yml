@@ -21,6 +21,9 @@ jobs:
         with:
           java-version: '11'
 
+      - name: Set up MySQL
+        uses: mirromutth/mysql-action@v1.1
+
       - name: Build with Maven
         run: mvn clean install
 
