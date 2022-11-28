@@ -14,6 +14,9 @@ public class LoginDto {
         return username;
     }
 
+    public LoginDto(){
+
+    }
     public void setUsername(String username) {
         this.username = username;
     }

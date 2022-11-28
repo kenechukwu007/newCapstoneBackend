@@ -14,12 +14,12 @@ public class ShoppingCart {
     private Date dateCreated;
 
     @ManyToOne
-    @JoinColumn(name = "product_id", referencedColumnName = "id")
+    @JoinColumn(name = "product_id")
     private Product product;
 
-    @OneToOne(targetEntity = Appuser.class, fetch = FetchType.EAGER)
+    @ManyToOne
     @JoinColumn(nullable = false, name = "user_id")
-    private Appuser appuser;
+    private Appuser user;
 
     private int volume;
 
@@ -53,12 +53,12 @@ public class ShoppingCart {
         this.product = product;
     }
 
-    public Appuser getAppuser() {
-        return appuser;
+    public Appuser getUser() {
+        return user;
     }
 
-    public void setAppuser(Appuser appuser) {
-        this.appuser = appuser;
+    public void setUser(Appuser user) {
+        this.user = user;
     }
 
     public int getVolume() {

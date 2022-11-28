@@ -23,7 +23,7 @@ public class Product {
     public Integer getId() {
         return id;
     }
-    // text
+
 
     public void setId(Integer id) {
         this.id = id;

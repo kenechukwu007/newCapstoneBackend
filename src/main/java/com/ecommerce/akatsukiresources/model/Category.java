@@ -14,15 +14,10 @@ public class Category {
     @Column(name = "category_name")
     private @NotBlank String categoryName;
 
-
     private @NotBlank String description;
 
 
     private @NotBlank String imageUrl;
-
-    @OneToMany(mappedBy = "category", fetch = FetchType.LAZY,
-            cascade = CascadeType.ALL)
-    Set<Product> products;
 
     public Integer getId() {
         return id;
@@ -42,14 +37,6 @@ public class Category {
 
     public String getDescription() {
         return description;
-    }
-
-    public Set<Product> getProducts() {
-        return products;
-    }
-
-    public void setProducts(Set<Product> products) {
-        this.products = products;
     }
 
     public void setDescription(String description) {

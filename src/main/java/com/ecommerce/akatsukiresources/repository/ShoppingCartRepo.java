@@ -8,6 +8,6 @@ import java.util.List;
 
 public interface ShoppingCartRepo extends JpaRepository<ShoppingCart, Integer> {
 
-    List<ShoppingCart> findAllByAppuser(Appuser appuser);
+    List<ShoppingCart> findAllByUser(Appuser user);
 
 }

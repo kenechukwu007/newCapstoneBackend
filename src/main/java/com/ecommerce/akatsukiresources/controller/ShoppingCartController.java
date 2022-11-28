@@ -37,7 +37,7 @@ public class ShoppingCartController {
 
         // verify the user token
         verificationService.verifyToken(token);
-        Appuser appuser = verificationService.getAppuser(token);
+        Appuser appuser = verificationService.getAppUser(token);
         shoppingCartService.addItem(addItemDto,appuser );
         return new ResponseEntity<>(new ApiResponse(true, "Product is in the basket!"), HttpStatus.CREATED);
 
@@ -48,7 +48,7 @@ public class ShoppingCartController {
     public ResponseEntity<SCartDto> getItem(@RequestParam("token") String token) {
 
         verificationService.verifyToken(token);
-        Appuser appuser = verificationService.getAppuser(token);
+        Appuser appuser = verificationService.getAppUser(token);
         SCartDto sCartDto = shoppingCartService.getAllItems(appuser);
         return new ResponseEntity<>(sCartDto, HttpStatus.OK);
 
@@ -58,7 +58,7 @@ public class ShoppingCartController {
     @DeleteMapping("/delete/{itemId}")
     public ResponseEntity<ApiResponse> deleteItem(@PathVariable("itemId") Integer itemId, @RequestParam("token") String token){
         verificationService.verifyToken(token);
-        Appuser appuser = verificationService.getAppuser(token);
+        Appuser appuser = verificationService.getAppUser(token);
         shoppingCartService.deleteItem(itemId, appuser);
 
         return new ResponseEntity<>(new ApiResponse(true, "Product has been deleted from the basket!"), HttpStatus.OK);

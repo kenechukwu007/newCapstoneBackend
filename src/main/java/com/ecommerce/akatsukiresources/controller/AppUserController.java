@@ -1,6 +1,7 @@
 package com.ecommerce.akatsukiresources.controller;
 
 import com.ecommerce.akatsukiresources.dto.AppDto.AppUserDto;
+import com.ecommerce.akatsukiresources.dto.AuthResponseDto;
 import com.ecommerce.akatsukiresources.dto.LoginDto;
 import com.ecommerce.akatsukiresources.dto.LoginDtoReceipt;
 import com.ecommerce.akatsukiresources.dto.ResponseDto;
@@ -17,12 +18,12 @@ public class AppUserController {
 
 
     @PostMapping("/register")
-    public ResponseDto register(@RequestBody AppUserDto appUserDto) {
+    public AuthResponseDto register(@RequestBody AppUserDto appUserDto) {
         return appUserService.register(appUserDto);
     }
 
     @PostMapping("/login")
-    public LoginDtoReceipt logIn(@RequestBody LoginDto loginDto) {
+    public AuthResponseDto logIn(@RequestBody LoginDto loginDto) {
         return appUserService.logIn(loginDto);
     }
 

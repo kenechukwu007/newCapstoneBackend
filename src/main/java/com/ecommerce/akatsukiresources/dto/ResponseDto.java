@@ -2,19 +2,19 @@ package com.ecommerce.akatsukiresources.dto;
 
 public class ResponseDto {
 
-    private String status;
+    private Integer status;
     private String message;
 
-    public ResponseDto(String status, String message) {
+    public ResponseDto(Integer status, String message) {
         this.status = status;
         this.message = message;
     }
 
-    public String getStatus() {
+    public Integer getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(Integer status) {
         this.status = status;
     }
 

@@ -28,7 +28,7 @@ public class ShoppingCartService {
     public void addItem(AddItemDto addItemDto, Appuser appuser) {
         Product product1 = productService.findById(addItemDto.getProductid());
         ShoppingCart shoppingCart = new ShoppingCart();
-        shoppingCart.setAppuser(appuser);
+        shoppingCart.setUser(appuser);
         shoppingCart.setProduct(product1);
         shoppingCart.setDateCreated(new Date());
         shoppingCart.setVolume(addItemDto.getVolume());
@@ -36,9 +36,9 @@ public class ShoppingCartService {
 
     }
 
-    public SCartDto getAllItems(Appuser appuser) {
+    public SCartDto getAllItems(Appuser user) {
         double price = 0;
-      List<ShoppingCart> shoppingCartList =  shoppingCartRepo.findAllByAppuser(appuser);
+      List<ShoppingCart> shoppingCartList =  shoppingCartRepo.findAllByUser(user);
       List<ItemDto> items = new ArrayList<>();
       for(ShoppingCart shoppingCart: shoppingCartList){
           ItemDto itemDto = new ItemDto(shoppingCart);
@@ -62,7 +62,7 @@ public class ShoppingCartService {
         }
 
         ShoppingCart shoppingCart = optionalShoppingCart.get();
-        if(shoppingCart.getAppuser() != appuser){
+        if(shoppingCart.getUser() != appuser){
             throw new CustomizedException("this item doesn't match the specified user: " + itemId);
         }
 

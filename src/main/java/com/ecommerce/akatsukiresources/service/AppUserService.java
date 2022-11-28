@@ -1,6 +1,7 @@
 package com.ecommerce.akatsukiresources.service;
 
 import com.ecommerce.akatsukiresources.dto.AppDto.AppUserDto;
+import com.ecommerce.akatsukiresources.dto.AuthResponseDto;
 import com.ecommerce.akatsukiresources.dto.LoginDto;
 import com.ecommerce.akatsukiresources.dto.LoginDtoReceipt;
 import com.ecommerce.akatsukiresources.dto.ResponseDto;
@@ -29,7 +30,7 @@ public class AppUserService  {
      VerificationService verificationService;
 
 
-    public ResponseDto register(AppUserDto appUserDto){
+    public AuthResponseDto register(AppUserDto appUserDto){
         // verify if user exist
        if (Objects.nonNull(appUserRepo.findByUsername(appUserDto.getUsername())))  {
 
@@ -55,13 +56,11 @@ public class AppUserService  {
        appUserRepo.save(appuser);
 
        final VerificationToken verificationToken = new VerificationToken(appuser);
-       verificationService.storeVerifiedtoken(verificationToken);
+       verificationService.storeVerifiedToken(verificationToken);
 
+        AuthResponseDto responseDto = new AuthResponseDto(201, "User created!", verificationToken.getToken() );
 
-
-        ResponseDto responseDto1 = new ResponseDto("200 OK! successful!", "User created!" );
-
-        return responseDto1;
+        return responseDto;
     }
 
     private String encryptedPassword(String passwd) throws NoSuchAlgorithmException {
@@ -73,7 +72,7 @@ public class AppUserService  {
     }
 
 
-    public LoginDtoReceipt logIn(LoginDto loginDto) {
+    public AuthResponseDto logIn(LoginDto loginDto) {
         Appuser appuser = appUserRepo.findByUsername(loginDto.getUsername());
         // check if a user with the userbame exist
         if(Objects.isNull(appuser)){
@@ -96,7 +95,7 @@ public class AppUserService  {
             System.out.println("Great!");
         }
 
-        return new LoginDtoReceipt("success", verificationToken.getToken());
+        return new AuthResponseDto(200, "success", verificationToken.getToken());
 
 
     }

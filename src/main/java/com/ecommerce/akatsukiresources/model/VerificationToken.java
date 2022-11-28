@@ -18,15 +18,15 @@ public class VerificationToken {
     @Column(name = "created_date")
     private Date createdDate;
 
-    @OneToOne(targetEntity = Appuser.class, fetch = FetchType.EAGER)
-    @JoinColumn(nullable = false, name = "userid")
-    private Appuser appuser;
+    @OneToOne
+    @JoinColumn(nullable = false, name = "user_id")
+    private Appuser user;
 
     public VerificationToken() {
     }
 
-    public VerificationToken(Appuser appuser){
-        this.appuser = appuser;
+    public VerificationToken(Appuser user){
+        this.user = user;
         this.createdDate = new Date();
         this.token = UUID.randomUUID().toString();
     }
@@ -55,12 +55,12 @@ public class VerificationToken {
         this.createdDate = createdDate;
     }
 
-    public Appuser getUser1() {
-        return appuser;
+    public Appuser getUser() {
+        return user;
     }
 
-    public void setUser1(Appuser user1) {
-        this.appuser = user1;
+    public void setUser(Appuser user) {
+        this.user = user;
     }
 
 
