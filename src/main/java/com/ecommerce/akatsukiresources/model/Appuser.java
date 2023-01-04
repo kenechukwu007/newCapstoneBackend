@@ -1,5 +1,7 @@
 package com.ecommerce.akatsukiresources.model;
 
+import com.ecommerce.akatsukiresources.enums.Role;
+
 import javax.persistence.*;
 
 @Entity
@@ -23,15 +25,20 @@ public class Appuser {
     @Column(name = "password")
     private String password;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "role")
+    private Role role;
+
     public Integer getId() {
         return id;
     }
 
-    public Appuser(String firstname, String lastname, String username, String password) {
+    public Appuser(String firstname, String lastname, String username, String password, Role role) {
         this.firstname = firstname;
         this.lastname = lastname;
         this.username = username;
         this.password = password;
+        this.role = role;
     }
 
     public Appuser() {
@@ -55,6 +62,14 @@ public class Appuser {
 
     public void setLastname(String lastname) {
         this.lastname = lastname;
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
     }
 
     public String getUsername() {

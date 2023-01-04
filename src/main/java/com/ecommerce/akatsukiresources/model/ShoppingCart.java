@@ -1,5 +1,7 @@
 package com.ecommerce.akatsukiresources.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.Date;
 
@@ -14,10 +16,11 @@ public class ShoppingCart {
     private Date dateCreated;
 
     @ManyToOne
-    @JoinColumn(name = "product_id")
+    @JoinColumn(name = "product_id", referencedColumnName = "id")
     private Product product;
 
-    @ManyToOne
+    @JsonIgnore
+    @OneToOne(targetEntity = Appuser.class, fetch = FetchType.EAGER)
     @JoinColumn(nullable = false, name = "user_id")
     private Appuser user;
 
@@ -26,6 +29,15 @@ public class ShoppingCart {
     public ShoppingCart(){
 
     }
+
+    public ShoppingCart(Product product, Appuser user, int volume) {
+        this.dateCreated = new Date();
+        this.product = product;
+        this.user = user;
+        this.volume = volume;
+    }
+
+
 
     public Integer getId() {
         return id;

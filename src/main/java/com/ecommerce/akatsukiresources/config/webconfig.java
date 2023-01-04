@@ -12,7 +12,12 @@ import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
-public  class webconfig  {
+public  class webconfig  implements WebMvcConfigurer {
+
+
+    public void addCorsMapping(CorsRegistry registry){
+        registry.addMapping("/**") .allowedMethods("") .allowedOrigins("") .allowedHeaders("*") .allowCredentials(false) .maxAge(86400);
+    }
 
 
     @Bean

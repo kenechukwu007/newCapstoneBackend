@@ -26,6 +26,8 @@ public class ShoppingCartController {
     @Autowired
     private VerificationService verificationService;
 
+
+
     /**
      * Controller to add items to the shopping cart
      * @param addItemDto
@@ -38,7 +40,8 @@ public class ShoppingCartController {
         // verify the user token
         verificationService.verifyToken(token);
         Appuser appuser = verificationService.getAppUser(token);
-        shoppingCartService.addItem(addItemDto,appuser );
+        Product prod = productService.findById(addItemDto.getProductid());
+        shoppingCartService.addItem(addItemDto,appuser,prod );
         return new ResponseEntity<>(new ApiResponse(true, "Product is in the basket!"), HttpStatus.CREATED);
 
 

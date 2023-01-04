@@ -1,8 +1,12 @@
 package com.ecommerce.akatsukiresources.service;
 
 import com.ecommerce.akatsukiresources.dto.AppDto.AppUserDto;
+import com.ecommerce.akatsukiresources.dto.AppDto.GetUserDto;
 import com.ecommerce.akatsukiresources.dto.AuthResponseDto;
+import com.ecommerce.akatsukiresources.dto.CreateAppUserDto;
 import com.ecommerce.akatsukiresources.dto.LoginDto;
+import com.ecommerce.akatsukiresources.dto.ResponseDto;
+import com.ecommerce.akatsukiresources.enums.Role;
 import com.ecommerce.akatsukiresources.handler.CustomizedException;
 import com.ecommerce.akatsukiresources.model.Appuser;
 import com.ecommerce.akatsukiresources.model.VerificationToken;
@@ -26,7 +30,7 @@ public class AppUserService  {
      VerificationService verificationService;
 
 
-    public AuthResponseDto register(AppUserDto appUserDto){
+    public AuthResponseDto register(AppUserDto appUserDto) throws CustomizedException{
         // verify if user exist
        if (Objects.nonNull(appUserRepo.findByUsername(appUserDto.getUsername())))  {
 
@@ -42,21 +46,20 @@ public class AppUserService  {
            ex.getMessage();
        }
 
-       // then save to the app user
-       Appuser appuser = new Appuser();
-       appuser.setUsername(appUserDto.getUsername());
-       appuser.setFirstname(appUserDto.getFirstName());
-       appuser.setLastname(appUserDto.getLastName());
-       appuser.setPassword(encryptPassword);
 
-       appUserRepo.save(appuser);
 
-       final VerificationToken verificationToken = new VerificationToken(appuser);
-       verificationService.storeVerifiedToken(verificationToken);
+        Appuser user = new Appuser(appUserDto.getFirstName(), appUserDto.getLastName(), appUserDto.getUsername(), encryptPassword, Role.user);
+        Appuser newUser;
 
-        AuthResponseDto responseDto = new AuthResponseDto(201, "User created!", verificationToken.getToken() );
-
-        return responseDto;
+        try{
+            newUser = appUserRepo.save(user);
+            final VerificationToken verificationToken = new VerificationToken(newUser);
+            verificationService.storeVerifiedToken(verificationToken);
+            AuthResponseDto responseDto = new AuthResponseDto(201, "User created!", verificationToken.getToken() );
+            return responseDto;
+        } catch(Exception ex){
+            throw new CustomizedException(ex.getMessage());
+        }
     }
 
     private String encryptedPassword(String passwd) throws NoSuchAlgorithmException {
@@ -65,6 +68,11 @@ public class AppUserService  {
         byte[] mDigest = messageDigest.digest();
         String encrypt = DatatypeConverter.printHexBinary(mDigest).toUpperCase();
         return encrypt;
+    }
+
+    public ResponseDto getUser(GetUserDto getUserDto){
+        ResponseDto responseDto = new ResponseDto(200, "user retrieved!");
+        return responseDto;
     }
 
 
@@ -94,5 +102,51 @@ public class AppUserService  {
         return new AuthResponseDto(200, "success", verificationToken.getToken());
 
 
+    }
+
+    public AuthResponseDto createAppUser(String token, CreateAppUserDto createAppUserDto) throws CustomizedException{
+        Appuser createAppUser = verificationService.getAppUser(token);
+        if(!canCrudAppUser(createAppUser.getRole())){
+            System.out.println("users cna't create new user");
+        }
+        String encryptPassword = createAppUserDto.getPassword();
+        try{
+            encryptPassword = encryptedPassword(createAppUserDto.getPassword());
+        } catch(Exception e){
+            throw new CustomizedException(e.getMessage());        }
+
+        Appuser user = new Appuser(createAppUserDto.getFirstName(), createAppUserDto.getLastName(), createAppUserDto.getUsername(), encryptPassword, Role.user);
+        Appuser newUser;
+
+        try{
+            newUser = appUserRepo.save(user);
+            final VerificationToken verificationToken = new VerificationToken(newUser);
+            verificationService.storeVerifiedToken(verificationToken);
+            AuthResponseDto responseDto = new AuthResponseDto(201, "User created!", verificationToken.getToken() );
+            return responseDto;
+        } catch(Exception ex){
+            throw new CustomizedException(ex.getMessage());
+        }
+
+    }
+
+    boolean canCrudAppUser(Role role) {
+        if (role == Role.admin) {
+            return true;
+        }
+        return false;
+    }
+
+    boolean canCrudAppUser(Appuser userUpdating, Integer userIdBeingUpdated) {
+        Role role = userUpdating.getRole();
+        // admin and manager can crud any user
+        if (role == Role.admin) {
+            return true;
+        }
+        // user can update his own record, but not his role
+        if (role == Role.user && userUpdating.getId() == userIdBeingUpdated) {
+            return true;
+        }
+        return false;
     }
 }

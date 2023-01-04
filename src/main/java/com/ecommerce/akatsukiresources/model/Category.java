@@ -1,5 +1,7 @@
 package com.ecommerce.akatsukiresources.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.util.Set;
@@ -18,6 +20,11 @@ public class Category {
 
 
     private @NotBlank String imageUrl;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "category", fetch = FetchType.LAZY,
+            cascade = CascadeType.ALL)
+    Set<Product> products;
 
     public Integer getId() {
         return id;
@@ -49,6 +56,14 @@ public class Category {
 
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
+    }
+
+    public Set<Product> getProducts() {
+        return products;
+    }
+
+    public void setProducts(Set<Product> products) {
+        this.products = products;
     }
 
     public Category(@NotBlank String categoryName, @NotBlank String description) {

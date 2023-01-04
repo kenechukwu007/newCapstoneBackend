@@ -25,13 +25,20 @@ public class ShoppingCartService {
     @Autowired
     ShoppingCartRepo shoppingCartRepo;
 
-    public void addItem(AddItemDto addItemDto, Appuser appuser) {
-        Product product1 = productService.findById(addItemDto.getProductid());
-        ShoppingCart shoppingCart = new ShoppingCart();
-        shoppingCart.setUser(appuser);
-        shoppingCart.setProduct(product1);
-        shoppingCart.setDateCreated(new Date());
-        shoppingCart.setVolume(addItemDto.getVolume());
+    public ShoppingCartService(ShoppingCartRepo shoppingCartRepo) {
+        this.shoppingCartRepo = shoppingCartRepo;
+    }
+
+    public ShoppingCartService() {
+    }
+
+    public void addItem(AddItemDto addItemDto, Appuser appuser, Product product) {
+        //Product product1 = productService.findById(addItemDto.getProductid());
+        ShoppingCart shoppingCart = new ShoppingCart(product, appuser, addItemDto.getVolume());
+//        shoppingCart.setUser(appuser);
+//        shoppingCart.setProduct(product1);
+//        shoppingCart.setDateCreated(new Date());
+//        shoppingCart.setVolume(addItemDto.getVolume());
         shoppingCartRepo.save(shoppingCart);
 
     }
