@@ -38,13 +38,18 @@ public class DBInit {
     @Bean
     public CommandLineRunner initDb(){
         return args -> {
-           Appuser user = appUserRepo.findByUsername("kene@afc.com");
-           if(user.equals(null)){
-               Appuser adminUser = new Appuser("William", "Ohia", "kene@afc.com", "mohawk", Role.admin);
-               appUserRepo.save(adminUser);
-               final VerificationToken verificationToken = new VerificationToken(adminUser);
-               verificationService.storeVerifiedToken(verificationToken);
-           }
+            try{
+                Appuser user = appUserRepo.findByUsername("kene@afc.com");
+                if(user == null){
+                    Appuser adminUser = new Appuser("William", "Ohia", "kene@afc.com", "mohawk", Role.admin);
+                    appUserRepo.save(adminUser);
+                    final VerificationToken verificationToken = new VerificationToken(adminUser);
+                    verificationService.storeVerifiedToken(verificationToken);
+                }
+            } catch(NullPointerException ex){
+                ex.printStackTrace();
+            }
+
 
         };
     }
